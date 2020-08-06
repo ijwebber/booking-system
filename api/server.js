@@ -17,4 +17,13 @@ db.once("open", () => console.log("Connected To Database"));
 app.use(cors());
 app.use(express.json());
 
+const tutorRouter = require("./routes/tutor");
+app.use("/tutor", tutorRouter);
+
+const studentRouter = require("./routes/student");
+app.use("/student", studentRouter);
+
+const sessionRouter = require("./routes/session");
+app.use("/session", sessionRouter);
+
 app.listen(8000, () => console.log("Server has started!"));
