@@ -1,5 +1,13 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const keys = require("../config/keys");
+
+// Load input validation
+const validateRegisterInput = require("../validation/register");
+const validateLoginInput = require("../validation/login");
+
 const User = require("../models/user");
 
 // Getting the list of all the users
@@ -18,16 +26,87 @@ router.get("/:id", getUser, (req, res) => {
 });
 
 // Creating a new user
-router.post("/", async (req, res) => {
-  console.log(req);
-  const user = new User(req.body);
+router.post("/register", async (req, res) => {
+  // Checking validation
+  const { errors, isValid } = validateRegisterInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  const newUser = new User(req.body);
+
+  User.findOne({ email: newUser.email }).then((user) => {
+    if (user) {
+      return res.status(400).json({ email: "Email already exists" });
+    }
+  });
+
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(newUser.password, salt, (err, hash) => {
+      if (err) throw err;
+      newUser.password = hash;
+      newUser
+        .save()
+        .then((user) => res.json(user))
+        .catch((err) => console.log(err));
+    });
+  });
 
   try {
-    const newUser = await user.save();
-    res.status(201).json(newUser);
+    const user = await newUser.save();
+    res.status(201).json(user);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
+});
+
+router.post("/login", (req, res) => {
+  console.log(req.body);
+  // Form validation
+  const { errors, isValid } = validateLoginInput(req.body);
+  // Check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+  const email = req.body.email;
+  const password = req.body.password;
+  // Find user by email
+  User.findOne({ email }).then((user) => {
+    // Check if user exists
+    if (!user) {
+      return res.status(404).json({ emailnotfound: "Email not found" });
+    }
+    // Check password
+    bcrypt.compare(password, user.password).then((isMatch) => {
+      if (isMatch) {
+        // User matched
+        // Create JWT Payload
+        const payload = {
+          id: user.id,
+          firstName: user.firstName,
+        };
+        // Sign token
+        jwt.sign(
+          payload,
+          keys.secretOrKey,
+          {
+            expiresIn: 31556926, // 1 year in seconds
+          },
+          (err, token) => {
+            res.json({
+              success: true,
+              token: "Bearer " + token,
+            });
+          }
+        );
+      } else {
+        return res
+          .status(400)
+          .json({ passwordincorrect: "Password incorrect" });
+      }
+    });
+  });
 });
 
 // Updating a user
