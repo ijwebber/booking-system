@@ -4,7 +4,6 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const keys = require("../config/keys");
 
 // Load input validation
 const validateRegisterInput = require("../validation/register");
@@ -13,7 +12,7 @@ const validateLoginInput = require("../validation/login");
 // Get the user model
 const User = require("../models/user");
 
-// Register a new user
+// Register
 router.post("/register", async (req, res) => {
   // Checking validation
   const { errors, isValid } = validateRegisterInput(req.body);
@@ -44,6 +43,7 @@ router.post("/register", async (req, res) => {
   });
 });
 
+// Login
 router.post("/login", (req, res) => {
   // Form validation
   const { errors, isValid } = validateLoginInput(req.body);
@@ -79,6 +79,12 @@ router.post("/login", (req, res) => {
       }
     });
   });
+});
+
+// Logout
+router.post("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.send({ success: true });
 });
 
 // Getting the list of all the users
