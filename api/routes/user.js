@@ -59,6 +59,8 @@ router.post("/login", (req, res) => {
     if (!user) {
       return res.status(404).json({ emailnotfound: "Email not found" });
     }
+    console.log(user);
+
     // Check password
     bcrypt.compare(password, user.password).then((isMatch) => {
       if (isMatch) {
@@ -71,7 +73,9 @@ router.post("/login", (req, res) => {
           expiresIn: 86400, // 1 year in seconds
         });
 
-        return res.cookie("token", token, { httpOnly: true }).send("Success");
+        return res
+          .cookie("token", token, { httpOnly: true })
+          .send({ success: true });
       } else {
         return res
           .status(400)
@@ -88,7 +92,7 @@ router.post("/logout", (req, res) => {
 });
 
 // Getting the list of all the users
-router.get("/", async (req, res) => {
+router.get("/", checkAuthenticated, checkPermissions, async (req, res) => {
   try {
     const users = await User.find();
     res.json(users);
@@ -142,5 +146,22 @@ async function getUser(req, res, next) {
   res.user = user;
   next();
 }
+
+async function checkAuthenticated(req, res, next) {
+  const token = req.cookies.token;
+  if (!token) return res.status(401).send("User is not logged in");
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    await User.findById(decoded.id).then((user) => {
+      req.user = user;
+    });
+    next();
+  } catch (er) {
+    res.clearCookie("token");
+    return res.status(400).send(er.message);
+  }
+}
+
+async function checkPermissions(req, res, next) {}
 
 module.exports = router;

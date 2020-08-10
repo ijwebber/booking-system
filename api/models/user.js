@@ -8,6 +8,7 @@ var userSchema = new Schema({
   email: { type: String, required: true },
   isStudent: { type: Boolean, required: true },
   dateCreated: { type: Date, default: Date.now },
+  permissionLevel: { type: Number, default: 2 }, // 0 - Admin, full control, 1 - Tutor, 2 - Student
 });
 
 module.exports = mongoose.model("User", userSchema);
