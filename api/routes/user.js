@@ -8,32 +8,20 @@ const keys = require("../config/keys");
 const validateRegisterInput = require("../validation/register");
 const validateLoginInput = require("../validation/login");
 
+// Get the user model
 const User = require("../models/user");
 
-// Getting the list of all the users
-router.get("/", async (req, res) => {
-  try {
-    const users = await User.find();
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// Getting a user by id
-router.get("/:id", getUser, (req, res) => {
-  res.send(res.user);
-});
-
-// Creating a new user
+// Register a new user
 router.post("/register", async (req, res) => {
   // Checking validation
   const { errors, isValid } = validateRegisterInput(req.body);
 
+  // If not valid then return status 400 with the errors
   if (!isValid) {
     return res.status(400).json(errors);
   }
 
+  // Create a new user from the request body
   const newUser = new User(req.body);
 
   User.findOne({ email: newUser.email }).then((user) => {
@@ -42,6 +30,7 @@ router.post("/register", async (req, res) => {
     }
   });
 
+  // Encrypt the password and then save the user to the database
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(newUser.password, salt, (err, hash) => {
       if (err) throw err;
@@ -52,17 +41,9 @@ router.post("/register", async (req, res) => {
         .catch((err) => console.log(err));
     });
   });
-
-  try {
-    const user = await newUser.save();
-    res.status(201).json(newUser);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
 });
 
 router.post("/login", (req, res) => {
-  console.log(req.body);
   // Form validation
   const { errors, isValid } = validateLoginInput(req.body);
   // Check validation
@@ -107,6 +88,21 @@ router.post("/login", (req, res) => {
       }
     });
   });
+});
+
+// Getting the list of all the users
+router.get("/", async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Getting a user by id
+router.get("/:id", getUser, (req, res) => {
+  res.send(res.user);
 });
 
 // Updating a user
