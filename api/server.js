@@ -5,6 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
@@ -25,6 +26,7 @@ db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connected To Database"));
 
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 
 // Passport middleware

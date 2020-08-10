@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
@@ -15,8 +17,6 @@ const User = require("../models/user");
 router.post("/register", async (req, res) => {
   // Checking validation
   const { errors, isValid } = validateRegisterInput(req.body);
-
-  // If not valid then return status 400 with the errors
   if (!isValid) {
     return res.status(400).json(errors);
   }
@@ -24,6 +24,7 @@ router.post("/register", async (req, res) => {
   // Create a new user from the request body
   const newUser = new User(req.body);
 
+  // Check if user with that email already exists
   User.findOne({ email: newUser.email }).then((user) => {
     if (user) {
       return res.status(400).json({ email: "Email already exists" });
@@ -46,41 +47,31 @@ router.post("/register", async (req, res) => {
 router.post("/login", (req, res) => {
   // Form validation
   const { errors, isValid } = validateLoginInput(req.body);
-  // Check validation
   if (!isValid) {
     return res.status(400).json(errors);
   }
+
   const email = req.body.email;
   const password = req.body.password;
-  // Find user by email
+
+  // Find user by email & check whether the user exists
   User.findOne({ email }).then((user) => {
-    // Check if user exists
     if (!user) {
       return res.status(404).json({ emailnotfound: "Email not found" });
     }
     // Check password
     bcrypt.compare(password, user.password).then((isMatch) => {
       if (isMatch) {
-        // User matched
         // Create JWT Payload
         const payload = {
           id: user.id,
-          firstName: user.firstName,
         };
         // Sign token
-        jwt.sign(
-          payload,
-          keys.secretOrKey,
-          {
-            expiresIn: 31556926, // 1 year in seconds
-          },
-          (err, token) => {
-            res.json({
-              success: true,
-              token: "Bearer " + token,
-            });
-          }
-        );
+        const token = jwt.sign(payload, process.env.SECRET_KEY, {
+          expiresIn: 86400, // 1 year in seconds
+        });
+
+        return res.cookie("token", token, { httpOnly: true }).send("Success");
       } else {
         return res
           .status(400)
