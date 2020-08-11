@@ -9,6 +9,12 @@ const jwt = require("jsonwebtoken");
 const validateRegisterInput = require("../validation/register");
 const validateLoginInput = require("../validation/login");
 
+// Load Permission Checks
+const checkAuthenticated = require("../services/checkAuthenticated");
+const checkAdmin = require("../services/checkAdmin");
+const checkTutor = require("../services/checkTutor");
+const checkStudent = require("../services/checkStudent");
+
 // Get the user model
 const User = require("../models/user");
 
@@ -59,7 +65,6 @@ router.post("/login", (req, res) => {
     if (!user) {
       return res.status(404).json({ emailnotfound: "Email not found" });
     }
-    console.log(user);
 
     // Check password
     bcrypt.compare(password, user.password).then((isMatch) => {
@@ -92,7 +97,8 @@ router.post("/logout", (req, res) => {
 });
 
 // Getting the list of all the users
-router.get("/", checkAuthenticated, checkPermissions, async (req, res) => {
+router.get("/", checkAuthenticated, checkAdmin, async (req, res) => {
+  console.log("ding dong");
   try {
     const users = await User.find();
     res.json(users);
@@ -144,42 +150,6 @@ async function getUser(req, res, next) {
   }
 
   res.user = user;
-  next();
-}
-
-async function checkAuthenticated(req, res, next) {
-  const token = req.cookies.token;
-  if (!token) return res.status(401).send("User is not logged in");
-  try {
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
-    await User.findById(decoded.id).then((user) => {
-      req.user = user;
-    });
-    next();
-  } catch (er) {
-    res.clearCookie("token");
-    return res.status(400).send(er.message);
-  }
-}
-
-async function checkAdmin(req, res, next) {
-  if (!req.user.isAdmin) {
-    res.status(401).send("User is not an admin");
-  }
-  next();
-}
-
-async function checkTutor(req, res, next) {
-  if (req.user.isStudent) {
-    res.status(401).send("User is not a tutor");
-  }
-  next();
-}
-
-async function checkStudent(req, res, next) {
-  if (!req.user.isStudent) {
-    res.status(401).send("User is not a student");
-  }
   next();
 }
 
