@@ -162,6 +162,25 @@ async function checkAuthenticated(req, res, next) {
   }
 }
 
-async function checkPermissions(req, res, next) {}
+async function checkAdmin(req, res, next) {
+  if (!req.user.isAdmin) {
+    res.status(401).send("User is not an admin");
+  }
+  next();
+}
+
+async function checkTutor(req, res, next) {
+  if (req.user.isStudent) {
+    res.status(401).send("User is not a tutor");
+  }
+  next();
+}
+
+async function checkStudent(req, res, next) {
+  if (!req.user.isStudent) {
+    res.status(401).send("User is not a student");
+  }
+  next();
+}
 
 module.exports = router;
