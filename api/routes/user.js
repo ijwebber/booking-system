@@ -108,35 +108,47 @@ router.get("/", checkAuthenticated, checkAdmin, async (req, res) => {
 });
 
 // Getting a user by id
-router.get("/:id", getUser, (req, res) => {
+router.get("/:id", checkAuthenticated, checkAdmin, getUser, (req, res) => {
   res.send(res.user);
 });
 
 // Updating a user
-router.patch("/:id", getUser, async (req, res) => {
-  if (req.body.firstName != null) {
-    res.user.firstName = req.body.firstName;
+router.patch(
+  "/:id",
+  checkAuthenticated,
+  checkAdmin,
+  getUser,
+  async (req, res) => {
+    if (req.body.firstName != null) {
+      res.user.firstName = req.body.firstName;
+    }
+    if (req.body.lastName != null) {
+      res.user.lastName = req.body.lastName;
+    }
+    try {
+      const updatedUser = await res.user.save();
+      res.json(updatedUser);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
   }
-  if (req.body.lastName != null) {
-    res.user.lastName = req.body.lastName;
-  }
-  try {
-    const updatedUser = await res.user.save();
-    res.json(updatedUser);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
+);
 
 // Deleting a user
-router.delete("/:id", getUser, async (req, res) => {
-  try {
-    await res.user.remove();
-    res.json({ message: "Deleted User" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+router.delete(
+  "/:id",
+  checkAuthenticated,
+  checkAdmin,
+  getUser,
+  async (req, res) => {
+    try {
+      await res.user.remove();
+      res.json({ message: "Deleted User" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
   }
-});
+);
 
 async function getUser(req, res, next) {
   let user;
