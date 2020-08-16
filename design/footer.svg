@@ -1,0 +1,16 @@
+<svg id="Component_1_1" data-name="Component 1 – 1" xmlns="http://www.w3.org/2000/svg" width="2077" height="545" viewBox="0 0 2077 545">
+  <circle id="Ellipse_1" data-name="Ellipse 1" cx="170" cy="170" r="170" transform="translate(0 58)" fill="#364f6b"/>
+  <circle id="Ellipse_10" data-name="Ellipse 10" cx="149.5" cy="149.5" r="149.5" transform="translate(1412 437) rotate(180)" fill="#f0f0f0"/>
+  <circle id="Ellipse_6" data-name="Ellipse 6" cx="170" cy="170" r="170" transform="translate(546 77)" fill="#fc5185"/>
+  <circle id="Ellipse_8" data-name="Ellipse 8" cx="170" cy="170" r="170" transform="translate(1983 445) rotate(180)" fill="#364f6b"/>
+  <circle id="Ellipse_2" data-name="Ellipse 2" cx="108" cy="108" r="108" transform="translate(232 12)" fill="#fc5185"/>
+  <circle id="Ellipse_9" data-name="Ellipse 9" cx="108" cy="108" r="108" transform="translate(1503 319) rotate(180)" fill="#fc5185"/>
+  <circle id="Ellipse_5" data-name="Ellipse 5" cx="108" cy="108" r="108" transform="translate(1005 211)" fill="#364f6b"/>
+  <path id="Polygon_1" data-name="Polygon 1" d="M148.5,0,297,228H0Z" transform="translate(351)" fill="#f0f0f0"/>
+  <path id="Polygon_4" data-name="Polygon 4" d="M186,0,372,228H0Z" transform="translate(1420 58)" fill="#f0f0f0"/>
+  <rect id="Rectangle_1" data-name="Rectangle 1" width="431" height="334" transform="translate(285 192)" fill="#43dde6"/>
+  <rect id="Rectangle_9" data-name="Rectangle 9" width="431" height="334" transform="translate(1679 545) rotate(180)" fill="#43dde6"/>
+  <path id="Polygon_2" data-name="Polygon 2" d="M148.5,0,297,228H0Z" transform="translate(983.024 451.57) rotate(169)" fill="#364f6b"/>
+  <rect id="Rectangle_6" data-name="Rectangle 6" width="254" height="299" transform="translate(837 192)" fill="#43dde6"/>
+  <rect id="Rectangle_8" data-name="Rectangle 8" width="188" height="377" transform="translate(2077 531) rotate(180)" fill="#fc5185"/>
+</svg>

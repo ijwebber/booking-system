@@ -1,12 +1,32 @@
+@font-face {
+  font-family: Patua One;
+  src: url("PatuaOne-Regular.ttf");
+}
+
 body {
   padding-top: 70px;
+  background-color: #e8e8e8;
+  font-family: Patua One;
 }
 
 .a-custom {
   transition: color 0.5s;
+  font-family: "Patua One";
+  color: black;
+  font-size: 28px;
 }
 
 .a-custom:hover {
   text-decoration: none;
-  color: black;
+  color: #fc5185;
+}
+
+.footer {
+  background-image: url("footer.svg");
+  width: 103vw;
+  height: 35vh;
+  position: fixed;
+  bottom: 0;
+  margin-left: -3vw;
+  z-index: -1;
 }
