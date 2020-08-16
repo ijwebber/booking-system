@@ -1,0 +1,12 @@
+.navbar-custom {
+  margin-bottom: 1rem;
+}
+
+.a-custom {
+  transition: color 0.5s;
+}
+
+.a-custom:hover {
+  text-decoration: none;
+  color: black;
+}
