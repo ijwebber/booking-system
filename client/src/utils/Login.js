@@ -6,12 +6,10 @@ export const isLoggedIn = async () => {
     .get("http://localhost:8000/user/login", { withCredentials: true })
     .then((res) => {
       console.log(res);
-      console.log(res.data.isLoggedIn);
-      return true;
+      return res.data.isLoggedIn;
     })
     .catch((error) => {
       console.log(error);
-      console.log("res.data.isLoggedIn");
       return false;
     });
 }; // TODO write a function that fetchs from /user/login and checks whether the user is logged in
@@ -26,8 +24,8 @@ export const login = (email, password) => {
       },
       { withCredentials: true }
     )
-    .then(function (response) {
-      console.log(response);
+    .then((res) => {
+      console.log(res);
       return true;
     })
     .catch(function (error) {
