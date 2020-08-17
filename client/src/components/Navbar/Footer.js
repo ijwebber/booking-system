@@ -2,7 +2,7 @@ import React from "react";
 import "./navbar.styles.css";
 
 function Footer() {
-  return <footer class="footer"></footer>;
+  return <footer className="footer"></footer>;
 }
 
 export default Footer;

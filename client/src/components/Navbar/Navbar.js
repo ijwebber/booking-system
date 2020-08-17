@@ -1,27 +1,33 @@
 import React from "react";
 import "./navbar.styles.css";
-import { Link } from "react-router-dom";
 
+// Just the text of the Navbar Links
+// If style included it replaces with that instead of the default
+// Used for Home
+// TODO check if this works for moving the link to the right for logout
 function NavbarLink(props) {
   return (
-    <div class="ml-3 mr-3">
-      <a href={props.path} class="a-custom">
+    <div className={props.style ? props.style : "ml-3 mr-3"}>
+      <a href={props.path} className="a-custom">
         {props.children}
       </a>
     </div>
   );
 }
 
+// Takes a list of objects and converts them into a formatted navigation bar
 function NavbarTemplate(props) {
   const links = props.links;
   const linksList = links.map((link) => (
     <NavbarLink path={link.path}>{link.text}</NavbarLink>
   ));
   return (
-    <nav class="navbar navbar-expand-sm fixed-top navbar-custom">
-      <div class="container-fluid">
-        <ul class="nav navbar-nav">
-          <NavbarLink path="/">HOME</NavbarLink>
+    <nav className="navbar navbar-expand-sm fixed-top navbar-custom">
+      <div className="container-fluid">
+        <ul className="nav navbar-nav">
+          <NavbarLink path="/" style="mr-3">
+            HOME
+          </NavbarLink>
           {linksList}
         </ul>
       </div>
