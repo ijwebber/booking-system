@@ -9,7 +9,7 @@
 
 .login-box-title {
   font-size: 60px;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
 }
 
 .login-box-subtitle {
@@ -29,7 +29,7 @@
   background-color: #fc5185;
   color: white;
   padding: 5px 30px 5px 30px;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 .login-box-button:hover {
