@@ -1,3 +1,6 @@
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
+
 module.exports = async function checkAuthenticated(req, res, next) {
   const token = req.cookies.token;
   if (!token) return res.status(401).send("User is not logged in");

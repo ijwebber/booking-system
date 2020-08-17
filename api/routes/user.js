@@ -96,9 +96,23 @@ router.post("/logout", (req, res) => {
   res.send({ success: true });
 });
 
+// Login Check
+router.get("/login", async (req, res) => {
+  const token = req.cookies.token;
+  if (!token) return res.status(200).json({ isLoggedIn: false });
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    await User.findById(decoded.id).then((user) => {
+      res.status(200).json({ isLoggedIn: true });
+    });
+  } catch (er) {
+    res.clearCookie("token");
+    return res.status(200).json({ isLoggedIn: false });
+  }
+});
+
 // Getting the list of all the users
 router.get("/", checkAuthenticated, checkAdmin, async (req, res) => {
-  console.log("ding dong");
   try {
     const users = await User.find();
     res.json(users);
