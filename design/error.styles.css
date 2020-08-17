@@ -1,0 +1,23 @@
+.home-button {
+  border-radius: 100px;
+  background-color: #fc5185;
+  color: white;
+  padding: 5px 30px 5px 30px;
+}
+
+.home-button:hover {
+  color: white;
+  background-color: #df3266;
+}
+
+.mt-25vh {
+  margin-top: 25vh;
+}
+
+.background-text {
+  cursor: default;
+  position: absolute;
+  z-index: -1;
+  font-size: 70vh;
+  color: #dad5d8;
+}
