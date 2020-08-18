@@ -19,15 +19,13 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: false, //TODO change back to the function call and fix the api
+      isLoggedIn: false,
     };
   }
 
-  /*
-  componentDidMount() { // TODO figure out what to do with the promise and what that means
-    console.log(isLoggedIn());
-    this.setState({ isLoggedIn: isLoggedIn() });
-  }*/
+  componentDidMount() {
+    isLoggedIn().then((login) => this.setState({ isLoggedIn: login }));
+  }
 
   updateIsLoggedIn(update) {
     this.setState({

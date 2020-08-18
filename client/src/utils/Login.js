@@ -12,7 +12,7 @@ export const isLoggedIn = async () => {
       console.log(error);
       return false;
     });
-}; // TODO write a function that fetchs from /user/login and checks whether the user is logged in
+};
 
 export const login = (email, password) => {
   axios
