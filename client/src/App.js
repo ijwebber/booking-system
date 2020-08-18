@@ -23,6 +23,12 @@ export default class App extends Component {
     };
   }
 
+  /*
+  componentDidMount() { // TODO figure out what to do with the promise and what that means
+    console.log(isLoggedIn());
+    this.setState({ isLoggedIn: isLoggedIn() });
+  }*/
+
   updateIsLoggedIn(update) {
     this.setState({
       isLoggedIn: update,
