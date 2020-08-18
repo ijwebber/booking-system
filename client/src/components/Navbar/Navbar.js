@@ -18,16 +18,16 @@ function NavbarLink(props) {
 function NavbarTemplate(props) {
   const links = props.links;
   const leftLinksList = links.map((link) =>
-    link.right ? null : <NavbarLink link={link}></NavbarLink>
+    link.right ? null : <NavbarLink key={link.text} link={link}></NavbarLink>
   );
   const rightLinksList = links.map((link) =>
-    !link.right ? null : <NavbarLink link={link}></NavbarLink>
+    !link.right ? null : <NavbarLink key={link.text} link={link}></NavbarLink>
   );
   return (
     <nav className="navbar navbar-expand-sm fixed-top navbar-custom">
       <div className="container-fluid">
         <ul className="nav navbar-nav">{leftLinksList}</ul>
-        <ul class="nav navbar-nav navbar-right">{rightLinksList}</ul>
+        <ul className="nav navbar-nav navbar-right">{rightLinksList}</ul>
       </div>
     </nav>
   );

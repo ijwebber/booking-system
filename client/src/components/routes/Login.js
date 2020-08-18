@@ -24,39 +24,39 @@ export default class Login extends Component {
   render() {
     return (
       <div
-        class="d-flex align-items-center flex-column justify-content-center h-100"
+        className="d-flex align-items-center flex-column justify-content-center h-100"
         id="header"
       >
-        <div class="login-box">
+        <div className="login-box">
           <form>
-            <h1 class="login-box-title">LOGIN</h1>
-            <div class="form-group">
-              <label class="login-box-subtitle">EMAIL</label>
+            <h1 className="login-box-title">LOGIN</h1>
+            <div className="form-group">
+              <label className="login-box-subtitle">EMAIL</label>
               <input
-                class="form-control login-box-input"
+                className="form-control login-box-input"
                 type="text"
                 name="email"
               />
             </div>
-            <div class="form-group">
-              <label class="login-box-subtitle">PASSWORD</label>
+            <div className="form-group">
+              <label className="login-box-subtitle">PASSWORD</label>
               <input
-                class="form-control login-box-input"
+                className="form-control login-box-input"
                 type={this.state.isPasswordVisible ? "text" : "password"}
                 name="password"
               />
               <img
                 src={this.state.isPasswordVisible ? openEye : closedEye}
                 alt="Reveal Password"
-                class="eye-icon"
+                className="eye-icon"
                 onClick={this.toggleViewPassword}
               />
             </div>
-            <div class="form-group">
-              <button class="btn login-box-button">SUBMIT</button>
+            <div className="form-group">
+              <button className="btn login-box-button">SUBMIT</button>
             </div>
-            <div class="form-group">
-              <a class="login-box-forgot" href="/forgot">
+            <div className="form-group">
+              <a className="login-box-forgot" href="/forgot">
                 Forgot password?
               </a>
             </div>
