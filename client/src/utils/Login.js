@@ -2,20 +2,19 @@ const axios = require("axios");
 axios.defaults.withCredentials = true;
 
 export const isLoggedIn = async () => {
-  await axios
+  return await axios
     .get("http://localhost:8000/user/login", { withCredentials: true })
     .then((res) => {
-      console.log(res);
       return res.data.isLoggedIn;
     })
-    .catch((error) => {
-      console.log(error);
+    .catch((err) => {
+      console.log(err);
       return false;
     });
 };
 
-export const login = (email, password) => {
-  axios
+export const login = async (email, password) => {
+  return await axios
     .post(
       "http://localhost:8000/user/login",
       {
@@ -25,22 +24,20 @@ export const login = (email, password) => {
       { withCredentials: true }
     )
     .then((res) => {
-      console.log(res);
-      return true;
+      return { success: res.data.success };
     })
-    .catch(function (error) {
-      console.log(error);
-      return false;
+    .catch(function (err) {
+      return { success: false, errors: err.response.data };
     });
 };
 
-export const logout = () => {
-  axios
+export const logout = async () => {
+  return await axios
     .post("http://localhost:8000/user/logout", { withCredentials: true })
     .then((res) => {
       console.log(res);
     })
-    .catch((error) => {
-      console.log(error);
+    .catch((err) => {
+      console.log(err);
     });
 };

@@ -11,9 +11,10 @@ import Error from "./components/routes/Error";
 import { isLoggedIn } from "./utils/Login";
 
 // Components
-import PrivateRoute from "./components/PrivateRoute";
+import { RestrictedRoute, PrivateRoute } from "./components/SpecialRoutes";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Navbar/Footer";
+import Dashboard from "./components/routes/Dashboard";
 
 export default class App extends Component {
   constructor(props) {
@@ -21,27 +22,42 @@ export default class App extends Component {
     this.state = {
       isLoggedIn: false,
     };
-  }
 
-  componentDidMount() {
     isLoggedIn().then((login) => this.setState({ isLoggedIn: login }));
+
+    this.updateIsLoggedIn = this.updateIsLoggedIn.bind(this);
+
+    //TODO try adding a spinner until loaded
   }
 
   updateIsLoggedIn(update) {
     this.setState({
       isLoggedIn: update,
     });
+    console.log(this.state);
   }
 
   render() {
     return (
       <div className="App">
-        <Navbar isLoggedIn={this.state.isLoggedIn} />
+        <Navbar
+          login={this.state.isLoggedIn}
+          onLogout={this.updateIsLoggedIn}
+        />
         <Switch>
-          <Route path="/" component={Home} exact />
-          <Route
+          <Route exact path="/" component={Home} exact />
+          <RestrictedRoute
+            exact
             path="/login"
-            render={() => <Login onLogin={this.updateIsLoggedIn} />}
+            component={Login}
+            isLoggedIn={this.state.isLoggedIn}
+            onLogin={this.updateIsLoggedIn}
+          />
+          <PrivateRoute
+            exact
+            path="/dashboard"
+            component={Dashboard}
+            isLoggedIn={this.state.isLoggedIn}
           />
           <Route component={Error} />
         </Switch>
@@ -50,10 +66,3 @@ export default class App extends Component {
     );
   }
 }
-
-/*
-<PrivateRoute
-            path="/tutor"
-            component={TutorHome}
-            loggedIn={this.state.isLoggedIn}
-          />*/

@@ -1,5 +1,6 @@
-import React from "react";
+import React, { Component } from "react";
 import "./navbar.styles.css";
+import LogoutLink from "./LogoutLink";
 
 // Just the text of the Navbar Links
 // If style included it replaces with that instead of the default
@@ -27,34 +28,43 @@ function NavbarTemplate(props) {
     <nav className="navbar navbar-expand-sm fixed-top navbar-custom">
       <div className="container-fluid">
         <ul className="nav navbar-nav">{leftLinksList}</ul>
-        <ul className="nav navbar-nav navbar-right">{rightLinksList}</ul>
+        <ul className="nav navbar-nav navbar-right">
+          {rightLinksList}
+          {props.showLogout ? <LogoutLink onLogout={props.onLogout} /> : null}
+        </ul>
       </div>
     </nav>
   );
 }
 
-function Navbar(props) {
-  return props.isLoggedIn ? privateNavbar : publicNavbar;
+export default class Navbar extends Component {
+  getPublicNavbar() {
+    return (
+      <NavbarTemplate
+        links={[
+          { text: "HOME", path: "/", styling: "mr-3" },
+          { text: "LOGIN", path: "/login" },
+          { text: "REGISTER", path: "/register" },
+        ]}
+      ></NavbarTemplate>
+    );
+  }
+
+  getStudentNavbar() {
+    return (
+      <NavbarTemplate
+        links={[
+          { text: "HOME", path: "/", styling: "mr-3" },
+          { text: "BOOK", path: "/book" },
+          { text: "MANAGE", path: "/manage" },
+        ]}
+        showLogout={true}
+        onLogout={this.props.onLogout}
+      ></NavbarTemplate>
+    );
+  }
+
+  render() {
+    return this.props.login ? this.getStudentNavbar() : this.getPublicNavbar();
+  }
 }
-
-const publicNavbar = (
-  <NavbarTemplate
-    links={[
-      { text: "HOME", path: "/", styling: "mr-3" },
-      { text: "LOGIN", path: "/login" },
-      { text: "REGISTER", path: "/register" },
-    ]}
-  ></NavbarTemplate>
-);
-
-const privateNavbar = (
-  <NavbarTemplate
-    links={[
-      { text: "BOOK", path: "/book" },
-      { text: "MANAGE", path: "/manage" },
-      { text: "LOGOUT", path: "/logout", right: true },
-    ]}
-  ></NavbarTemplate>
-); //TODO design a private navbar and possibly have it split into tutor and student
-
-export default Navbar;
