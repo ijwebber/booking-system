@@ -45,7 +45,7 @@ export default class App extends Component {
           onLogout={this.updateIsLoggedIn}
         />
         <Switch>
-          <Route exact path="/" component={Home} exact />
+          <Route exact path="/" component={Home} />
           <RestrictedRoute
             exact
             path="/login"
